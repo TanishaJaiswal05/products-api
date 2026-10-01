@@ -40,4 +40,7 @@ const productSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.models.Product || mongoose.model('Product', productSchema);
+// Prevent model recompilation in hot reload
+const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
+
+export default Product;
