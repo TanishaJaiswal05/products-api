@@ -36,9 +36,22 @@ export default function ProductsPage() {
     try {
       const res = await fetch('/api/products');
       const data = await res.json();
-      setProducts(data);
+      const productList = Array.isArray(data)
+        ? data
+        : Array.isArray(data?.items)
+          ? data.items
+          : [];
+
+      setProducts(productList);
+      setFilteredProducts(
+        selectedCategory
+          ? productList.filter((p: Product) => p.category === selectedCategory)
+          : productList
+      );
     } catch (error) {
       console.error('Failed to fetch products:', error);
+      setProducts([]);
+      setFilteredProducts([]);
     } finally {
       setLoading(false);
     }
